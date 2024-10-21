@@ -5,14 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js"></script>
+
+    <script>
+        // Your Firebase configuration (Replace with your project's credentials)
+        const firebaseConfig = {
+  apiKey: "AIzaSyDA8ZGj-52_sOhgAMjRavm0yrL_Wy-QVlA",
+  authDomain: "projectmitra-d1c68.firebaseapp.com",
+  projectId: "projectmitra-d1c68",
+  storageBucket: "projectmitra-d1c68.appspot.com",
+  messagingSenderId: "590789678052",
+  appId: "1:590789678052:web:f04972da25fed92fe42df1",
+  measurementId: "G-1KHTDTLPKX"
+};
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+    </script>
 </head>
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <form action="login.php" method="POST"> <!-- Specify your backend script here -->
+        <form id="loginForm"> <!-- No need for action="login.php" if you're using Firebase Authentication -->
             <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+                <label for="username">Email:</label>
+                <input type="email" id="username" name="username" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
@@ -22,5 +41,30 @@
         </form>
         <p>Don't have an account? <a href="register.html">Register here</a></p> <!-- Link to registration page -->
     </div>
+
+    <script>
+        const loginForm = document.querySelector("form");
+
+        loginForm.addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent the form from submitting traditionally
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                // Use Firebase's signInWithEmailAndPassword method
+                const userCredential = await firebase.auth().signInWithEmailAndPassword(username, password);
+                const user = userCredential.user;
+                console.log("User logged in:", user);
+
+                // Redirect to another page upon successful login
+                window.location.href = "dashboard.html"; // Change to your desired page
+
+            } catch (error) {
+                console.error("Error logging in:", error.message);
+                alert("Login failed: " + error.message);
+            }
+        });
+    </script>
 </body>
 </html>
