@@ -1,0 +1,2 @@
+@echo off
+SET PATH=C:\Users\HP\AppData\Roaming\fnm\node-versions\20;%PATH%
