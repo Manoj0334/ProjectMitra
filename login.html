@@ -3,68 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js"></script>
+    <title>Login - ProjetMitra</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6DD5ED 0%, #2193B0 100%);
+            --secondary-gradient: linear-gradient(135deg, #FFC371 0%, #FF5F6D 100%);
+            --card-background: rgba(255, 255, 255, 0.95);
+            --input-border: #ddd;
+            --input-focus-border: #6DD5ED;
+            --button-primary-bg: #2193B0;
+            --button-primary-hover-bg: #1a7b93;
+            --text-color-dark: #333;
+            --text-color-light: #fff;
+            --link-color: #2193B0;
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-subtle: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --google-blue: #4285F4;
+            --apple-black: #000;
+        }
 
-    <script>
-        // Your Firebase configuration (Replace with your project's credentials)
-        const firebaseConfig = {
-  apiKey: "AIzaSyDA8ZGj-52_sOhgAMjRavm0yrL_Wy-QVlA",
-  authDomain: "projectmitra-d1c68.firebaseapp.com",
-  projectId: "projectmitra-d1c68",
-  storageBucket: "projectmitra-d1c68.appspot.com",
-  messagingSenderId: "590789678052",
-  appId: "1:590789678052:web:f04972da25fed92fe42df1",
-  measurementId: "G-1KHTDTLPKX"
-};
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--primary-gradient); /* Vibrant background */
+            background-size: 200% 200%;
+            animation: gradientAnimation 15s ease infinite;
+            color: var(--text-color-dark);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-    </script>
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .login-card {
+            background: var(--card-background);
+            border-radius: 18px;
+            box-shadow: var(--shadow-soft);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            backdrop-filter: blur(5px); /* Subtle blur for modern look */
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+        }
+
+        .login-card h2 {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            color: var(--text-color-dark);
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-group input {
+            width: calc(100% - 40px); /* Adjust width for icon */
+            padding: 15px 20px 15px 45px; /* Left padding for icon */
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            font-size: 1em;
+            color: var(--text-color-dark);
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .input-group input:focus {
+            border-color: var(--input-focus-border);
+            outline: none;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(33, 147, 176, 0.2);
+        }
+
+        .input-group .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 1.1em;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -15px; /* Pull it up a bit */
+            margin-bottom: 25px;
+        }
+
+        .forgot-password a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: var(--button-primary-bg);
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background: var(--button-primary-bg);
+            color: var(--text-color-light);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: var(--shadow-subtle);
+            margin-bottom: 25px;
+        }
+
+        .login-button:hover {
+            background: var(--button-primary-hover-bg);
+            transform: translateY(-2px);
+        }
+
+        .separator {
+            margin: 30px 0;
+            position: relative;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .separator::before,
+        .separator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background-color: #eee;
+        }
+
+        .separator::before {
+            left: 0;
+        }
+
+        .separator::after {
+            right: 0;
+        }
+
+        .social-login-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .social-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text-color-light);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .social-button i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .social-button.google {
+            background-color: var(--google-blue);
+        }
+
+        .social-button.google:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(66, 133, 244, 0.3);
+        }
+
+        .social-button.apple {
+            background-color: var(--apple-black);
+        }
+
+        .social-button.apple:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .signup-link {
+            font-size: 0.95em;
+            color: var(--text-color-dark);
+        }
+
+        .signup-link a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .signup-link a:hover {
+            color: var(--button-primary-hover-bg);
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .login-card {
+                padding: 30px 20px;
+                margin: 0 15px;
+            }
+
+            .login-card h2 {
+                font-size: 1.8em;
+                margin-bottom: 25px;
+            }
+
+            .input-group input {
+                padding: 12px 15px 12px 40px;
+                font-size: 0.95em;
+            }
+
+            .input-group .icon {
+                left: 12px;
+                font-size: 1em;
+            }
+
+            .login-button {
+                padding: 12px;
+                font-size: 1em;
+            }
+
+            .social-button {
+                padding: 10px;
+                font-size: 0.95em;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm"> <!-- No need for action="login.php" if you're using Firebase Authentication -->
-            <div class="form-group">
-                <label for="username">Email:</label>
-                <input type="email" id="username" name="username" required>
+        <div class="login-card">
+            <h2>Welcome Back!</h2>
+            <form>
+                <div class="input-group">
+                    <i class="fas fa-user icon"></i>
+                    <input type="text" id="userId" name="userId" placeholder="User ID or Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="forgot-password">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+            </form>
+
+            <div class="separator">Or login with</div>
+
+            <div class="social-login-buttons">
+                <a href="#" class="social-button google">
+                    <i class="fab fa-google"></i> Login with Google
+                </a>
+                <a href="#" class="social-button apple">
+                    <i class="fab fa-apple"></i> Login with Apple ID
+                </a>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+
+            <div class="signup-link">
+                Don't have an account? <a href="#">Sign Up</a>
             </div>
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <a href="register.html">Register here</a></p> <!-- Link to registration page -->
+        </div>
     </div>
-
-    <script>
-        const loginForm = document.querySelector("form");
-
-        loginForm.addEventListener("submit", async function(event) {
-            event.preventDefault(); // Prevent the form from submitting traditionally
-
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-
-            try {
-                // Use Firebase's signInWithEmailAndPassword method
-                const userCredential = await firebase.auth().signInWithEmailAndPassword(username, password);
-                const user = userCredential.user;
-                console.log("User logged in:", user);
-
-                // Redirect to another page upon successful login
-                window.location.href = "dashboard.html"; // Change to your desired page
-
-            } catch (error) {
-                console.error("Error logging in:", error.message);
-                alert("Login failed: " + error.message);
-            }
-        });
-    </script>
 </body>
 </html>
